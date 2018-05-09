@@ -8,6 +8,8 @@ package proyecto2;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,24 +17,36 @@ import java.util.List;
  */
 public class CopyPaste {
     int noMovs;
+    int cadenaDuplicada;
     List <String> temporal;
+    List <String> temporal2;
     String patronSalida;
     
     private void iniciar(){
         noMovs = 0;
         temporal = new ArrayList<String>();
+        temporal2 = new ArrayList<String>();
         patronSalida = "";
+        cadenaDuplicada = 0;
+    }
+    
+    private void finalizar(){
+        System.exit(0);
+       
     }
     
     public void tomarCadena(String patron){
         iniciar();
+        int tamanoOriginal = 0;
         System.out.println("tamanio Patron: "+patron.length());
         for (int i = 0; i < patron.length(); i++) {
             temporal.add((String) patron.subSequence(i, i+1));
         }
        
+        tamanoOriginal = temporal.size();
         
         System.out.println("\nTamaño del arreglo: " + temporal.size() + "\n");
+        cadenaDuplicada = 2*tamanoOriginal;
         System.out.println("Cadena ingresada: " + temporal + "\n");
         noMovs++;
        
@@ -69,43 +83,49 @@ public class CopyPaste {
         for (int i = 0; i < temporal.size(); i++) {
             //while(temporal.get(i) != null){
             System.out.println("Nuevo Tamanio: "+ temporal.size());
-            if (temporal.get(i) != null) {
+            //if (temporal.get(i) != null) {
                 System.out.println("q1, posicion: "+ i + "\n");
                 noMovs++;
                 //i++;
-            }else{
+            //}else{
                 System.out.println("q1 ---> q2");
                 noMovs++;
             ///if (temporal.get(i) == null) {
                 
                 //temporal.add("X") = ' ';
-            }
+            //}
         }
         temporal.add("X");
         Q2();
     }
     
     public void Q2(){
-        for (int i = temporal.size()-1; i > 0; i--) {
+        System.out.println("Cadena en Q2: "+ temporal);
+        System.out.println("Nuevo tamanio en Q2: "+ temporal.size());
+        if (temporal.size() <= cadenaDuplicada) {
             
-            while(temporal.get(i) != null){
+            for (int i = temporal.size()-1; i >= 0; i--) {
+            
+            
                 System.out.println("q2, posicion: " + i + "\n");
                 noMovs++;
-                //i--;
-            }
-            
-            if (temporal.get(i) == null) {
                 System.out.println("q2 ---> q3");
                 noMovs++;
+        //temporal2.addAll(temporal);
+                System.out.println("Cadena en Q3" + temporal);
+                System.out.println("Nuevo tamanio en q3: "+temporal.size());
                 Q3();
+            
             }
+        }else{
+            Q6();
         }
-        
     }
     
     public void Q3(){
-        for (int i = 0; i < temporal.size()-1; i++) {
-            i++;
+        
+        for (int i = 0; i <= temporal.size()-1; i++) {
+            //i++;
             switch(temporal.get(i)){
                 case "X":
                     System.out.println("q3, posicion: " + i + "\n");
@@ -137,58 +157,58 @@ public class CopyPaste {
                     noMovs++;
                     Q5();
                     break;
-                case " ":
-                    System.out.println("q3 ---> q6");
-                    noMovs++;
-                    Q6();
-                    break;
+//                case " ":
+//                    System.out.println("q3 ---> q6");
+//                    noMovs++;
+//                    Q6();
+//                    break;
                 default:
                     System.out.println("Caracter no valido: "+ temporal.get(i)+ "\n");
                     break;
             }
             
         }
+        System.out.println("Cadena a Q6: "+ temporal);
+        Q6();
     }
     
      public void Q4(){
-        for (int i = 0; i < temporal.size(); i++) {
-            i++;
-            while(temporal.get(i) != null){
-                System.out.println("q4, posicion: "+ i + "\n");
+        for (int i = temporal.size()-1; i >= 0; i--) {
+            
+            if (temporal.get(i) != " ") {
+                System.out.println("q4, posicion: " + i + "\n");
                 noMovs++;
-                i++;
-            }
-            System.out.println("q4 ---> q2");
-            noMovs++;
-            if (temporal.get(i) == null) {
-                temporal.add("Y");
-                Q2();
+               // i--;
             }
         }
+          System.out.println("q4 ---> q2");
+            noMovs++;
+            temporal.add("Y");
+           // temporal.clear();
+            //temporal.addAll(temporal2);
+                Q2();
     
     }
      
       public void Q5(){
-        for (int i = 0; i < temporal.size(); i++) {
-            i++;
-            while(temporal.get(i) != null){
+        for (int i = 0; i < temporal.size()-1; i++) {
+            if (temporal.get(i) != " ") {
                 System.out.println("q5, posicion: "+ i + "\n");
                 noMovs++;
-                i++;
-            }
-            System.out.println("q5 ---> q2");
-            noMovs++;
-            if (temporal.get(i) == null) {
-                temporal.add("Z");
-                Q2();
             }
         }
+            System.out.println("q5 ---> q2");
+            noMovs++;
+            
+            temporal.add("Z");
+            Q2();
+            
     }
       
       public void Q6(){
           
-          for (int i = temporal.size(); i > 0; i--) {
-              i--;
+          for (int i = temporal.size()-1; i >= 0; i--) {
+              //i--;
               switch(temporal.get(i)){
                   case "X":
                       temporal.set(i, "a");
@@ -215,10 +235,13 @@ public class CopyPaste {
                       break;
               }
           }
+          Q7();
       
       }
       
       public void Q7(){
-          System.out.println("\n Estado de Aceptación \n Nueva cadena: "+ temporal.toString());
+          System.out.println("\n Estado de Aceptación \n Nueva cadena: "+ temporal.toString() + "\n Cantidad de movimientos: "+ noMovs);
+          finalizar();
+          
       }
 }
